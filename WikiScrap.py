@@ -16,9 +16,10 @@ links = tabla.findAll('a')
 
 #Extraigo. Primero ingreso a la tabla, luego la recorro celda por celda
 
-tabla_final = []
+tabla_final=[]
 provincia=""
 habitantes=""
+capital=""
 nroFila=0
 for fila in tabla.find_all("tr"):
     if nroFila>0:
@@ -30,20 +31,23 @@ for fila in tabla.find_all("tr"):
             if nroCelda==3:
                 habitantes=celda.text
                 print("Habitantes:", habitantes)
-                tabla_final.append((provincia,habitantes))
+            if nroCelda==6:
+                capital=celda.text
+                print("Capital:", capital)
+                tabla_final.append((provincia,habitantes,capital))
             nroCelda=nroCelda+1
     nroFila=nroFila+1
     
 #Opcion 1: Lo extraemos como csv para usarlo en lo que necesitemos
-# with open('WikiScrap.csv', 'a') as csv_file:
-#     writer = csv.writer(csv_file)
-#     for provincia, habitantes in tabla_final:
-#         writer.writerow([provincia, habitantes])
+with open('WikiScrap.csv', 'a') as csv_file:
+    writer = csv.writer(csv_file)
+    for provincia,habitantes,capital in tabla_final:
+        writer.writerow([provincia, habitantes, capital])
 
-#Opcion 2: lo convertimos en un DataFrame para comenzar a trabajarlo
-import pandas as pd
-df = pd.DataFrame()
-df['Provincia', 'Habitantes'] = tabla_final
+# #Opcion 2: lo convertimos en un DataFrame para comenzar a trabajarlo
+# import pandas as pd
+# df = pd.DataFrame()
+# df['Provincia', 'Habitantes'] = tabla_final
 
-#Tambien la podemos extraer como csv o xlsx
-df.to_csv("WikiScrap.csv")
+# #Tambien la podemos extraer como csv o xlsx
+# df.to_csv("WikiScrap.csv")
